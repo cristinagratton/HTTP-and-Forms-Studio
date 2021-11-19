@@ -2,10 +2,47 @@
 
 <head>
 	<meta charset="utf-8">
+	<link rel="stylesheet" href="style.css">
 	<script>
 		// TODO: create a handler
+		let setSearchEngine = function() {
+		let searchEngine = document.querySelector("input[name=engine]:checked").value;
+		let form = document.getElementById("searchForm");
+		let actions = {
+			"google": "https://www.google.com/search",
+			"duckDuckGo": "https://duckduckgo.com/",
+			"bing": "https://www.bing.com/search",
+			"ask": "https://www.ask.com/web"
+		};
+
+		form.setAttribute("action", actions[searchEngine]);
+	};
+
+	let userInputs = [];
+
     window.addEventListener("load", function(){
-        // TODO: register the handler
+	   let button = document.getElementById("go");
+	   let form = document.getElementById("searchForm");
+	   form.addEventListener("submit", function(event) {
+	   let search = document.querySelector("input[name=q]");
+	   
+	   let radios = document.getElementsByName("engine");
+
+	   let missingRadio = true;
+	   for (let i=0; i < radios.length; i++){
+		   if (radios[i].checked) {
+			   userInputs.push(radios[i]);
+			   missingRadio = false;
+		   }
+	   }
+
+		if (search.value === "" || missingRadio) {
+			alert("All fields are required!");
+			event.preventDefault();
+		}
+		
+	   });
+       button.addEventListener("click", setSearchEngine);
     });
 	</script>
 </head>
@@ -13,7 +50,15 @@
 <body>
 
 	<form id="searchForm">
-    <!-- TODO: add form elements -->
+	<!-- TODO: add form elements -->
+		<input type="text" name="q"/>
+
+		<label><input type="radio" name="engine" value="google"/> Google</label>
+		<label><input type="radio" name="engine" value="duckDuckGo"/> DuckDuckGo</label>
+		<label><input type="radio" name="engine" value="bing"/> Bing</label>
+		<label><input type="radio" name="engine" value="ask"/> Ask</label>
+
+		<button id="go">Go!</button>
 	</form>
 
 </body>
